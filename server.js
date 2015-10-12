@@ -1,12 +1,39 @@
 
 var fs   = require( 'fs' );
 var http = require( 'http' );
-var url_utils = require( './url_utils.js' );
-var data_ops = require( './read_data_csv.js.js' );
+var utils = require( './utils.js' );
+var timers = require('timers');
 
 
-function serveFile( req, res )
-{
+  var options = {
+    host: 'cs.coloradocollege.edu',
+    port: '8900',
+    path: '/./data.txt'
+  };
+
+  //defines call back from data server, builds SQL
+  function callback(response)
+  {
+    var str = '';
+
+    //another chunk of data has been recieved, so append it to `str`
+    response.on('data', function (chunk) {
+      str += chunk;
+    });
+
+    //the whole response has been recieved, so we just print it out here
+    response.on('end', function () {
+      console.log(str);
+    });
+  }
+
+  function updateData()
+  {
+    http.request(options, callback).end()
+  }
+
+  function serveFile( req, res )
+  {
     if( req.url === "/" || req.url === "/index.htm" )
     {
         req.url = "/index.html";
@@ -18,14 +45,15 @@ function serveFile( req, res )
         res.end( contents );
         return true;
     }
-    catch( exp ) {
+    catch( exp )
+    {
         return false;
     }
 }
 
 function serveDynamic( req, res )
 {
-    var kvs = url_utils.getFormValuesFromURL( req.url );
+    var kvs = utils.getFormValuesFromURL( req.url );
     if( req.url.indexOf( "refresh?" ) >= 0 )
     {
       var db = new sql.Database( 'data.sqlite' );
@@ -38,6 +66,7 @@ function serveDynamic( req, res )
                         resp_text += rows[i].ID + "," + rows[i].L1 +  "," + rows[i].L2;
 
                     }
+                    console.log(resp_text);
                     res.end( resp_text );
                 } );
     }
@@ -45,7 +74,7 @@ function serveDynamic( req, res )
     {
         res.writeHead( 404 );
         res.end( "Unknown URL: "+req.url );
-    }
+   }
 }
 
 function serverFun( req, res )
@@ -61,8 +90,10 @@ function serverFun( req, res )
 function init()
 {
     var server = http.createServer( serverFun );
-    
+    timers.setInterval(updateData, 1000);
     server.listen( 8080 );
+
 }
+
 
 init();

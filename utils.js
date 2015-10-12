@@ -15,7 +15,7 @@ exports.getFormValuesFromURL = function( url )
     return kvs
 }
 
-exports.parseTime = function (time);
+exports.parseTime = function (time)
 {
   var time_value = 0;
   var char_pattern = /[0-9A-Za-z]{1,2}/g;
@@ -35,12 +35,10 @@ exports.parseTime = function (time);
 }
 
 //writes over previous database data with most recent info
-exports.update = function( filebuffer )
+exports.update = function( contents_lines )
 {
   var sql = require( 'sqlite3' ).verbose();
   var db = new sql.Database( 'data.sqlite' );
-  var contents = fileBuffer.toString();
-  var contents_lines = contents.split('\n');
   for (var i = 0; i < contents_lines.length; i++) {
     if(contents_lines[i] !== "")
       {
