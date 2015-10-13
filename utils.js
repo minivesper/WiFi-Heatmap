@@ -69,8 +69,28 @@ function update( contents )
       }
 
    }
-   var int = sqlite3_changes(db);
-   console.log(int);
+   db.all("SELECT COUNT(*) FROM Nodes",
+              function( err, rows ) {
+
+                if( rows[0]['COUNT(*)'] < contents_lines.length)
+                {
+                  for (var i = rows[0]['COUNT(*)']; i < contents_lines.length; i++) {
+                    if(contents_lines[i] !== "")
+                      {
+                        var line = [];
+                        line = contents_lines[i].split(",");
+                        l1 = line[1];
+                        l2 = line[2];
+                        //console.log(sql + values);
+                        db.run( "INSERT INTO Nodes(L1, L2) VALUES ( ?, ? )", l1, l2,
+                                    function( err ) {
+                                        //console.log(err);
+                                        console.log("added latency data");
+                                    } );
+                      }
+                  }
+                }
+              });
 
 }
 

@@ -3,6 +3,7 @@ var fs   = require( 'fs' );
 var http = require( 'http' );
 var utils = require( './utils.js' );
 var timers = require('timers');
+var sql = require( 'sqlite3' ).verbose();
 
 
 var options = {
@@ -61,14 +62,16 @@ var options = {
               db.all( "SELECT * FROM Nodes",
                   function( err, rows ) {
                       res.writeHead( 200 );
-                      var resp_text = "";
+                      var resp_arr = [];
                       for( var i = 0; i < rows.length; i++ )
                       {
-                          resp_text += rows[i].ID + "," + rows[i].L1 +  "," + rows[i].L2;
+                          var resp_obj = {};
+                          resp_obj = { ID:rows[i].ID, Lat1:rows[i].L1, Lat2:rows[i].L2 };
+                          resp_arr.push(resp_obj);
 
                         }
-                        console.log(resp_text);
-                        res.end( resp_text );
+                        console.log(resp_obj);
+                        res.end(  JSON.stringify( resp_arr ) );
                       } );
                     }
                     else
