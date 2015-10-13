@@ -22,7 +22,7 @@ function write()
   var db = new sql.Database( 'data.sqlite' );
   var contents = fileBuffer.toString();
   var contents_lines = contents.split('\n');
-  for (var i = 1; i < contents_lines.length; i++) {
+  for (var i = 0; i < contents_lines.length; i++) {
     if(contents_lines[i] !== "")
       {
         var line = [];
@@ -62,4 +62,4 @@ function update()
 
    }
 }
-update();
+write();

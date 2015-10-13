@@ -1,5 +1,5 @@
 //Util for parsing URLs and dealing with times, if we ever get around to that.
-exports.getFormValuesFromURL = function( url )
+function getFormValuesFromURL( url )
 {
     var kvs = {};
     var parts = url.split( "?" );
@@ -15,7 +15,23 @@ exports.getFormValuesFromURL = function( url )
     return kvs
 }
 
-exports.parseTime = function (time)
+function parseColor( lat )
+{
+  if( lat <= 90)
+  {
+    return "#4AA02C";
+  }
+  else if( 90 <= lat >= 170)
+  {
+    return "#FBB117";
+  }
+  else
+  {
+    return "#F70D1A";
+  }
+}
+
+function parseTime( time )
 {
   var time_value = 0;
   var char_pattern = /[0-9A-Za-z]{1,2}/g;
@@ -35,8 +51,9 @@ exports.parseTime = function (time)
 }
 
 //writes over previous database data with most recent info
-exports.update = function( contents_lines )
+function update( contents )
 {
+  var contents_lines = contents.split('\n');
   var sql = require( 'sqlite3' ).verbose();
   var db = new sql.Database( 'data.sqlite' );
   for (var i = 0; i < contents_lines.length; i++) {
@@ -44,13 +61,20 @@ exports.update = function( contents_lines )
       {
         var line = [];
         line = contents_lines[i].split(",");
-        var sql = "UPDATE Nodes Set L1='" + line[1] + "', L2='" + line[2] + "' WHERE ID='" + i + "'" ;
+        var sql = "UPDATE Nodes Set L1='" + line[1] + "', L2='" + line[2] + "' WHERE ID='" + (i+1) + "'" ;
         db.run( sql,
                     function( err ) {
-                        //console.log(err);
                         console.log("Updated latency data");
                     } );
       }
 
    }
+   var int = sqlite3_changes(db);
+   console.log(int);
+
 }
+
+exports.getFormValuesFromURL = getFormValuesFromURL;
+exports.parseTime = parseTime;
+exports.update = update;
+exports.parseColor = parseColor;
