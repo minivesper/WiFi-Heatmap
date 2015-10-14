@@ -9,7 +9,7 @@ var sql = require( 'sqlite3' ).verbose();
 var options = {
     host: 'cs.coloradocollege.edu',
     port: '8900',
-    path: '/./data3.txt'
+    path: '/./data.txt'
   };
 
   //defines call back from data server, builds SQL
@@ -95,7 +95,7 @@ var options = {
         {
           var server = http.createServer( serverFun );
           timers.setInterval(updateData, 1000);
-          server.listen( 8081 );
+          server.listen( 8080 );
 
         }
 
