@@ -1,5 +1,20 @@
-body{perspective: 900px;overflow: hidden;}
+body {
+	overflow: hidden;
+}
 #map { 
-  height: 400px;
-  /*height: 100vh;*/
+  height: 100vh;
+}
+
+#title {
+	font-family:monospace;
+	position: absolute;
+	z-index: 1;
+	left: 75px;
+}
+
+#buttons {
+	position: absolute;
+	z-index: 1;
+	left: 18px;
+	top: 75px;
 }

@@ -8,10 +8,15 @@
 	<title>Campus Wi-Fi</title>
 </head>
 <body>
+	<h1 id="title">Map of Campus Wi-Fi Strength</h1>
+	<div id="buttons">
+		<input type="button" value="Local Host" onclick="colorL1()">
+		<input type="button" value="Distant Host" onclick="colorL2()">
+	</div>
 	<div id="map"></div>
-	<input type="button" value="Lat1" onclick="colorSwitch()">
 	<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
 	<script src="campus_buildings.js"></script>
-	<script src="map_test.js"></script>
+	<script src="map_functions.js"></script>
+	<script src="map.js"></script>
 </body>
 </html>

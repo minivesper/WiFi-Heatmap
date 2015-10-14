@@ -1,9 +1,14 @@
 /*
-  Colorado College building location data courtesy of
-  Co-Director of We
+  Colorado College building mapping data courtesy of Mark Lee,
+  Co-Director of Web Design for CC Communications
 */
 
-var buildings = [
+window.buildings = {
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2014-08-13T21:47:02Z",
+  "features": [
   {
       "type": "Feature",
       "id": "1",
@@ -1925,3 +1930,4 @@ var buildings = [
       }
     }
   ]
+}
